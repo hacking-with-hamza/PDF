@@ -6,8 +6,6 @@
     <title>Premium PDF Converter</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.5/canvg.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -28,12 +26,10 @@
         .container {
             width: 100%;
             max-width: 900px;
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             border-radius: 20px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .header {
@@ -41,38 +37,16 @@
             color: white;
             padding: 30px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
-            background-size: cover;
-        }
-        
-        .header-content {
-            position: relative;
-            z-index: 1;
         }
         
         .header h1 {
             font-size: 36px;
             margin-bottom: 10px;
-            font-weight: 700;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
         .header p {
             opacity: 0.9;
             font-size: 18px;
-            max-width: 600px;
-            margin: 0 auto;
         }
         
         .logo {
@@ -99,25 +73,6 @@
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .card h2 i {
-            color: #b21f1f;
-        }
-        
-        .input-section {
-            margin-bottom: 25px;
-        }
-        
-        .input-section label {
-            display: block;
-            margin-bottom: 12px;
-            font-weight: 600;
-            color: #333;
-            font-size: 18px;
         }
         
         textarea {
@@ -129,15 +84,6 @@
             resize: vertical;
             font-size: 16px;
             line-height: 1.6;
-            transition: all 0.3s;
-            background: #fafafa;
-        }
-        
-        textarea:focus {
-            outline: none;
-            border-color: #1a2a6c;
-            box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.1);
-            background: white;
         }
         
         .options-section {
@@ -156,13 +102,6 @@
             margin-bottom: 10px;
             font-weight: 600;
             color: #333;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .option-group label i {
-            color: #b21f1f;
         }
         
         select, input {
@@ -170,15 +109,6 @@
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 16px;
-            background: #fafafa;
-            transition: all 0.3s;
-        }
-        
-        select:focus, input:focus {
-            outline: none;
-            border-color: #1a2a6c;
-            box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.1);
-            background: white;
         }
         
         .button-section {
@@ -195,34 +125,28 @@
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
             min-width: 200px;
+            transition: all 0.3s;
         }
         
         .download-btn {
             background: linear-gradient(to right, #1a2a6c, #b21f1f);
             color: white;
-            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.4);
         }
         
         .download-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(26, 42, 108, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.4);
         }
         
         .clear-btn {
             background: linear-gradient(to right, #6a11cb, #2575fc);
             color: white;
-            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
         }
         
         .clear-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
         }
         
         .footer {
@@ -231,10 +155,6 @@
             color: white;
             font-size: 16px;
             background: linear-gradient(to right, #1a2a6c, #b21f1f);
-        }
-        
-        .footer p {
-            margin: 5px 0;
         }
         
         .creator {
@@ -251,14 +171,6 @@
             background: #f9f9f9;
         }
         
-        .preview-section h3 {
-            margin-bottom: 15px;
-            color: #1a2a6c;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
         .preview-content {
             background-color: white;
             padding: 20px;
@@ -267,7 +179,7 @@
             max-height: 250px;
             overflow-y: auto;
             line-height: 1.6;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            white-space: pre-wrap;
         }
         
         .stats {
@@ -278,27 +190,14 @@
             font-size: 14px;
         }
         
-        @media (max-width: 768px) {
-            .button-section {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            button {
-                width: 100%;
-            }
-            
-            .options-section {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 28px;
-            }
-            
-            .header p {
-                font-size: 16px;
-            }
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            display: none;
         }
     </style>
 </head>
@@ -310,25 +209,30 @@
                     <i class="fas fa-file-pdf"></i>
                 </div>
                 <h1>Premium PDF Converter</h1>
-                <p>Transform your text into professional PDF documents with ease</p>
+                <p>Transform your text into professional PDF documents</p>
             </div>
         </div>
         
         <div class="content">
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> PDF successfully generated and downloaded!
+            </div>
+            
             <div class="card">
-                <h2><i class="fas fa-edit"></i> Enter Your Text</h2>
+                <h2>Enter Your Text</h2>
                 <div class="input-section">
                     <label for="textInput">Your Content:</label>
-                    <textarea id="textInput" placeholder="Type or paste your text here...">Hello! 👋 Welcome to the PDF Converter! 😊
+                    <textarea id="textInput" placeholder="Type or paste your text here...">Hello! Welcome to the PDF Converter!
 
-This tool will convert your text into a beautiful PDF document 📄.
+This tool will convert your text into a beautiful PDF document.
 
 Features:
-✅ Multiple Font Sizes 🔤
-✅ Professional Layout 💼
-✅ Easy Download ⬇️
-🛠️ DEVELOPED BY MEHAR HAMZA
-Try it now! ✨</textarea>
+• Multiple Font Sizes
+• Professional Layout  
+• Easy Download
+• Clean PDF Output
+
+Try it now!</textarea>
                 </div>
                 
                 <div class="stats">
@@ -338,10 +242,10 @@ Try it now! ✨</textarea>
             </div>
             
             <div class="card">
-                <h2><i class="fas fa-sliders-h"></i> Customization Options</h2>
+                <h2>Customization Options</h2>
                 <div class="options-section">
                     <div class="option-group">
-                        <label for="fontSize"><i class="fas fa-text-height"></i> Font Size</label>
+                        <label for="fontSize">Font Size</label>
                         <select id="fontSize">
                             <option value="12">Small (12pt)</option>
                             <option value="14" selected>Medium (14pt)</option>
@@ -351,7 +255,7 @@ Try it now! ✨</textarea>
                     </div>
                     
                     <div class="option-group">
-                        <label for="pageSize"><i class="fas fa-file"></i> Page Size</label>
+                        <label for="pageSize">Page Size</label>
                         <select id="pageSize">
                             <option value="a4">A4</option>
                             <option value="letter" selected>Letter</option>
@@ -360,16 +264,16 @@ Try it now! ✨</textarea>
                     </div>
                     
                     <div class="option-group">
-                        <label for="fileName"><i class="fas fa-font"></i> File Name</label>
+                        <label for="fileName">File Name</label>
                         <input type="text" id="fileName" placeholder="Enter file name" value="MyDocument">
                     </div>
                 </div>
             </div>
             
             <div class="card">
-                <h2><i class="fas fa-eye"></i> Preview</h2>
+                <h2>Preview</h2>
                 <div class="preview-section">
-                    <h3><i class="fas fa-file-alt"></i> How your PDF will look:</h3>
+                    <h3>How your PDF will look:</h3>
                     <div class="preview-content" id="preview">
                         Your PDF preview will appear here...
                     </div>
@@ -389,7 +293,7 @@ Try it now! ✨</textarea>
         </div>
         
         <div class="footer">
-            <p class="creator">This tool is generated by MehAR HAMZA</p>
+            <p class="creator">This Tool Is Generate By MEHAR HAMZA</p>
         </div>
     </div>
 
@@ -404,6 +308,7 @@ Try it now! ✨</textarea>
             const preview = document.getElementById('preview');
             const wordCount = document.getElementById('wordCount');
             const charCount = document.getElementById('charCount');
+            const successMessage = document.getElementById('successMessage');
             
             // Update preview and stats as user types
             textInput.addEventListener('input', updatePreview);
@@ -411,10 +316,7 @@ Try it now! ✨</textarea>
             
             function updatePreview() {
                 const text = textInput.value || 'Your PDF preview will appear here...';
-                const size = fontSize.value + 'px';
-                
-                preview.innerHTML = text.replace(/\n/g, '<br>');
-                preview.style.fontSize = size;
+                preview.textContent = text;
                 
                 // Update word and character count
                 const words = text.trim() ? text.trim().split(/\s+/).length : 0;
@@ -430,86 +332,49 @@ Try it now! ✨</textarea>
                 updatePreview();
             });
             
-            // Download PDF
+            // Download PDF - SIMPLE AND WORKING VERSION
             downloadBtn.addEventListener('click', function() {
                 const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
                 
-                // Set document properties
-                const text = textInput.value;
-                const selectedPageSize = pageSize.value;
+                // Get values
+                let text = textInput.value;
                 const selectedFontSize = parseInt(fontSize.value);
                 const docName = fileName.value || 'MyDocument';
                 
-                // Set page size
-                let pageWidth = 210; // A4 width in mm
-                let pageHeight = 297; // A4 height in mm
+                // Remove any special characters that might cause issues
+                text = text.replace(/[^\x00-\x7F]/g, "");
                 
-                if (selectedPageSize === 'letter') {
-                    pageWidth = 216;
-                    pageHeight = 279;
-                } else if (selectedPageSize === 'legal') {
-                    pageWidth = 216;
-                    pageHeight = 356;
-                }
+                // Create PDF
+                const doc = new jsPDF();
                 
+                // Set properties
                 doc.setProperties({
                     title: docName,
                     subject: 'Text to PDF Conversion',
                     author: 'MehAR HAMZA PDF Tool',
-                    keywords: 'text, pdf, conversion',
                     creator: 'PDF Converter by MehAR HAMZA'
                 });
                 
                 // Set font and size
+                doc.setFont("helvetica");
                 doc.setFontSize(selectedFontSize);
                 
-                // Split text into lines that fit the page width
+                // Page dimensions
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
                 const margin = 20;
-                const maxWidth = pageWidth - margin * 2;
+                const maxWidth = pageWidth - (2 * margin);
                 
-                // Function to handle text with emojis
-                function splitTextWithEmojis(text, maxWidth) {
-                    const lines = [];
-                    let currentLine = '';
-                    
-                    // Split by words to preserve emojis
-                    const words = text.split(/(\s+)/);
-                    
-                    for (let i = 0; i < words.length; i++) {
-                        const word = words[i];
-                        const testLine = currentLine + word;
-                        const testWidth = doc.getTextWidth(testLine);
-                        
-                        if (testWidth > maxWidth && currentLine !== '') {
-                            lines.push(currentLine);
-                            currentLine = word;
-                        } else {
-                            currentLine = testLine;
-                        }
-                    }
-                    
-                    if (currentLine !== '') {
-                        lines.push(currentLine);
-                    }
-                    
-                    return lines;
-                }
+                // Split text into lines
+                const lines = doc.splitTextToSize(text, maxWidth);
                 
-                const lines = splitTextWithEmojis(text, maxWidth);
-                
-                // Add content to PDF
+                // Add text to PDF
                 let y = margin;
-                const lineHeight = selectedFontSize / 2.5;
+                const lineHeight = selectedFontSize * 0.35;
                 
                 for (let i = 0; i < lines.length; i++) {
                     // Check if we need a new page
-                    if (y + lineHeight > pageHeight - margin - 15) {
-                        // Add footer before new page
-                        doc.setFontSize(10);
-                        doc.setTextColor(100);
-                        doc.text('THIS PAGE IS GENERATED BY USING MEHAR HAMZA TOOL', pageWidth / 2, pageHeight - 10, { align: 'center' });
-                        
+                    if (y + lineHeight > pageHeight - margin) {
                         doc.addPage();
                         y = margin;
                     }
@@ -518,13 +383,28 @@ Try it now! ✨</textarea>
                     y += lineHeight;
                 }
                 
-                // Add footer to the last page
-                doc.setFontSize(10);
-                doc.setTextColor(100);
-                doc.text('THIS PAGE IS GENERATED BY USING MEHAR HAMZA TOOL', pageWidth / 2, pageHeight - 10, { align: 'center' });
+                // Add footer to every page
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(10);
+                    doc.setTextColor(100);
+                    doc.text(
+                        'THIS PAGE IS GENERATED BY USING MEHAR HAMZA TOOL', 
+                        pageWidth / 2, 
+                        pageHeight - 10, 
+                        { align: 'center' }
+                    );
+                }
                 
-                // Download the PDF
+                // Save PDF
                 doc.save(docName + '.pdf');
+                
+                // Show success message
+                successMessage.style.display = 'block';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
             });
             
             // Initialize preview

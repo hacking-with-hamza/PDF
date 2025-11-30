@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium PDF Converter</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <title>VidHost Pro | Upload & Share Videos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #4cc9f0;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -15,540 +24,562 @@
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
         }
         
         .container {
-            width: 100%;
-            max-width: 1000px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            margin: 20px 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
         
-        .header {
-            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 25px 20px;
-            text-align: center;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-        
-        .header p {
-            opacity: 0.9;
-            font-size: 16px;
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .logo {
-            font-size: 36px;
-            margin-bottom: 12px;
-            color: #fdbb2d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
         }
         
-        .content {
-            padding: 25px 20px;
+        .logo i {
+            color: var(--accent);
         }
         
-        .card {
+        /* Main Content */
+        .main-content {
+            display: flex;
+            gap: 30px;
+            padding: 3rem 0;
+        }
+        
+        .upload-section {
+            flex: 1;
             background: white;
             border-radius: 15px;
-            padding: 20px;
+            padding: 2rem;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            margin-bottom: 25px;
-            border: 1px solid #f0f0f0;
         }
         
-        .card h2 {
-            color: #1a2a6c;
-            margin-bottom: 18px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
-            font-size: 22px;
-        }
-        
-        textarea {
-            width: 100%;
-            height: 200px;
-            padding: 18px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            resize: vertical;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        
-        .options-section {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .option-group {
+        .upload-section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
         
-        .option-group label {
-            margin-bottom: 10px;
-            font-weight: 600;
-            color: #333;
-            font-size: 16px;
-        }
-        
-        select, input {
-            padding: 15px;
-            border: 2px solid #e0e0e0;
+        .upload-area {
+            border: 2px dashed var(--gray);
             border-radius: 10px;
-            font-size: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
         
-        .button-section {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 25px;
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
         }
         
-        button {
-            padding: 18px 25px;
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .upload-area h3 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-area p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 18px;
+            border-radius: 10px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .upload-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+        }
+        
+        .video-section {
+            flex: 2;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .video-section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .video-player {
             width: 100%;
-            transition: all 0.3s;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .video-player video {
+            width: 100%;
+            display: block;
+        }
+        
+        .video-info {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .video-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+        
+        .share-section {
+            margin-top: 2rem;
+        }
+        
+        .share-section h3 {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .share-link {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        
+        .share-link input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+        
+        .copy-btn {
+            padding: 0 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .uploaded-videos {
+            margin-top: 2rem;
+        }
+        
+        .video-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .video-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 120px;
+            background: #ddd;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            color: var(--gray);
         }
         
-        .download-btn {
-            background: linear-gradient(to right, #1a2a6c, #b21f1f);
-            color: white;
-            box-shadow: 0 4px 10px rgba(26, 42, 108, 0.3);
-        }
-        
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(26, 42, 108, 0.4);
-        }
-        
-        .clear-btn {
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            color: white;
-            box-shadow: 0 4px 10px rgba(106, 17, 203, 0.3);
-        }
-        
-        .clear-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(106, 17, 203, 0.4);
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: white;
-            font-size: 16px;
-            background: linear-gradient(to right, #1a2a6c, #b21f1f);
-        }
-        
-        .creator {
-            font-weight: 700;
-            color: #fdbb2d;
-            font-size: 17px;
-        }
-        
-        .preview-section {
-            margin-top: 25px;
-            padding: 20px;
-            border: 2px dashed #e0e0e0;
-            border-radius: 12px;
-            background: #f9f9f9;
-        }
-        
-        .preview-content {
-            background-color: white;
-            padding: 18px;
-            border-radius: 8px;
-            min-height: 120px;
-            max-height: 200px;
-            overflow-y: auto;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            font-size: 16px;
-        }
-        
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            color: #666;
-            font-size: 15px;
-            background: #f8f9fa;
-            padding: 12px 15px;
-            border-radius: 10px;
-        }
-        
-        .success-message {
-            background: #d4edda;
-            color: #155724;
+        .video-details {
             padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            text-align: center;
-            display: none;
+        }
+        
+        .video-item-title {
             font-weight: 600;
-            border-left: 5px solid #28a745;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
+        .video-item-date {
+            font-size: 0.8rem;
+            color: var(--gray);
         }
         
-        .section-title i {
-            color: #1a2a6c;
-            font-size: 20px;
+        .progress-bar {
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+            display: none;
         }
         
-        /* Mobile Responsive Styles */
-        @media (min-width: 768px) {
-            .container {
-                margin: 30px 0;
-            }
-            
-            .header {
-                padding: 30px;
-            }
-            
-            .header h1 {
-                font-size: 36px;
-            }
-            
-            .header p {
-                font-size: 18px;
-            }
-            
-            .logo {
-                font-size: 40px;
-            }
-            
-            .content {
-                padding: 40px;
-            }
-            
-            .card {
-                padding: 25px;
-            }
-            
-            .options-section {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 25px;
-            }
-            
-            .button-section {
-                flex-direction: row;
-                gap: 20px;
-            }
-            
-            button {
-                width: auto;
-                min-width: 220px;
-            }
-            
-            textarea {
-                height: 250px;
-            }
-            
-            .preview-content {
-                max-height: 250px;
-            }
+        .progress {
+            height: 100%;
+            background: var(--success);
+            width: 0%;
+            transition: width 0.3s ease;
         }
         
-        @media (min-width: 992px) {
-            .container {
-                max-width: 1100px;
-            }
-            
-            .header h1 {
-                font-size: 40px;
-            }
-            
-            .content {
-                padding: 50px;
-            }
+        .upload-status {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            display: none;
         }
         
-        /* Animation for buttons */
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
             }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-        
-        .pulse {
-            animation: pulse 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="header-content">
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
                 <div class="logo">
-                    <i class="fas fa-file-pdf"></i>
+                    <i class="fas fa-play-circle"></i>
+                    <span>VidHost Pro</span>
                 </div>
-                <h1>Premium PDF Converter</h1>
-                <p>Transform your text into professional PDF documents</p>
-            </div>
+            </nav>
         </div>
-        
-        <div class="content">
-            <div class="success-message" id="successMessage">
-                <i class="fas fa-check-circle"></i> PDF successfully generated and downloaded!
-            </div>
-            
-            <div class="card">
-                <div class="section-title">
-                    <i class="fas fa-edit"></i>
-                    <h2>Enter Your Text</h2>
-                </div>
-                <div class="input-section">
-                    <label for="textInput">Your Content:</label>
-                    <textarea id="textInput" placeholder="Type or paste your text here...">Hello! Welcome to the PDF Converter!
+    </header>
 
-This tool will convert your text into a beautiful PDF document.
-
-Features:
-• Multiple Font Sizes
-• Professional Layout  
-• Easy Download
-• Clean PDF Output
-
-Try it now!</textarea>
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <h2><i class="fas fa-upload"></i> Upload Video</h2>
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Drag & Drop Your Video</h3>
+                    <p>MP4, WebM, or MOV (Max. 100MB)</p>
+                    <button class="btn btn-primary">Select Files</button>
+                    <input type="file" class="file-input" id="fileInput" accept="video/*">
                 </div>
                 
-                <div class="stats">
-                    <div>Words: <span id="wordCount">0</span></div>
-                    <div>Characters: <span id="charCount">0</span></div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="section-title">
-                    <i class="fas fa-sliders-h"></i>
-                    <h2>Customization Options</h2>
-                </div>
-                <div class="options-section">
-                    <div class="option-group">
-                        <label for="fontSize"><i class="fas fa-text-height"></i> Font Size</label>
-                        <select id="fontSize">
-                            <option value="12">Small (12pt)</option>
-                            <option value="14" selected>Medium (14pt)</option>
-                            <option value="16">Large (16pt)</option>
-                            <option value="18">Extra Large (18pt)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="option-group">
-                        <label for="pageSize"><i class="fas fa-file"></i> Page Size</label>
-                        <select id="pageSize">
-                            <option value="a4">A4</option>
-                            <option value="letter" selected>Letter</option>
-                            <option value="legal">Legal</option>
-                        </select>
-                    </div>
-                    
-                    <div class="option-group">
-                        <label for="fileName"><i class="fas fa-font"></i> File Name</label>
-                        <input type="text" id="fileName" placeholder="Enter file name" value="MyDocument">
+                <div class="upload-details">
+                    <div class="form-group">
+                        <label for="videoTitle">Video Title</label>
+                        <input type="text" id="videoTitle" placeholder="Enter a title for your video" class="form-control">
                     </div>
                 </div>
-            </div>
-            
-            <div class="card">
-                <div class="section-title">
-                    <i class="fas fa-eye"></i>
-                    <h2>Preview</h2>
+                
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress" id="progress"></div>
                 </div>
-                <div class="preview-section">
-                    <h3>How your PDF will look:</h3>
-                    <div class="preview-content" id="preview">
-                        Your PDF preview will appear here...
-                    </div>
-                </div>
-            </div>
-            
-            <div class="button-section">
-                <button class="clear-btn" id="clearBtn">
-                    <i class="fas fa-eraser"></i>
-                    Clear Text
+                
+                <div class="upload-status" id="uploadStatus"></div>
+                
+                <button class="upload-btn" id="uploadBtn" disabled>
+                    <i class="fas fa-cloud-upload-alt"></i> Upload Video
                 </button>
-                <button class="download-btn" id="downloadBtn">
-                    <i class="fas fa-download"></i>
-                    Download PDF
-                </button>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p class="creator">This Tool Is Generate By MEHAR HAMZA</p>
+                
+                <div class="uploaded-videos">
+                    <h3 style="margin: 25px 0 15px;">Your Videos</h3>
+                    <div class="video-list" id="videoList">
+                        <!-- Videos will be added here dynamically -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Video Section -->
+            <section class="video-section">
+                <h2><i class="fas fa-play-circle"></i> Video Player</h2>
+                <div class="video-player">
+                    <video id="videoPlayer" controls poster="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                
+                <div class="video-info">
+                    <h2 class="video-title" id="displayTitle">Select a video to play</h2>
+                    <div class="video-meta">
+                        <span><i class="far fa-calendar"></i> Uploaded: --</span>
+                        <span><i class="far fa-eye"></i> Views: 0</span>
+                    </div>
+                    <p id="displayDescription">Choose a video from your uploaded videos or upload a new one to get started.</p>
+                    
+                    <div class="share-section">
+                        <h3><i class="fas fa-share-alt"></i> Share Your Video</h3>
+                        <div class="share-link">
+                            <input type="text" id="shareLink" value="No video selected" readonly>
+                            <button class="copy-btn" id="copyBtn">Copy</button>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--gray); margin-bottom: 15px;">Share this link to allow others to view your video</p>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const textInput = document.getElementById('textInput');
-            const fontSize = document.getElementById('fontSize');
-            const pageSize = document.getElementById('pageSize');
-            const fileName = document.getElementById('fileName');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const clearBtn = document.getElementById('clearBtn');
-            const preview = document.getElementById('preview');
-            const wordCount = document.getElementById('wordCount');
-            const charCount = document.getElementById('charCount');
-            const successMessage = document.getElementById('successMessage');
+        // DOM Elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const displayTitle = document.getElementById('displayTitle');
+        const displayDescription = document.getElementById('displayDescription');
+        const shareLink = document.getElementById('shareLink');
+        const copyBtn = document.getElementById('copyBtn');
+        const videoList = document.getElementById('videoList');
+        const progressBar = document.getElementById('progressBar');
+        const progress = document.getElementById('progress');
+        const uploadStatus = document.getElementById('uploadStatus');
+        const videoTitle = document.getElementById('videoTitle');
+        
+        // Store uploaded videos
+        let uploadedVideos = JSON.parse(localStorage.getItem('uploadedVideos')) || [];
+        
+        // Initialize the video list
+        renderVideoList();
+        
+        // Upload area click event
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        // File input change event
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const fileName = e.target.files[0].name;
+                uploadArea.innerHTML = `
+                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                    <h3>${fileName}</h3>
+                    <p>Ready to upload</p>
+                    <button class="btn btn-primary">Change File</button>
+                `;
+                uploadBtn.disabled = false;
+            }
+        });
+        
+        // Upload button click event
+        uploadBtn.addEventListener('click', () => {
+            if (!fileInput.files.length) return;
             
-            // Update preview and stats as user types
-            textInput.addEventListener('input', updatePreview);
-            fontSize.addEventListener('change', updatePreview);
+            const file = fileInput.files[0];
+            const title = videoTitle.value || file.name.replace(/\.[^/.]+$/, ""); // Remove extension
             
-            function updatePreview() {
-                const text = textInput.value || 'Your PDF preview will appear here...';
-                preview.textContent = text;
-                
-                // Update word and character count
-                const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-                const chars = text.length;
-                
-                wordCount.textContent = words;
-                charCount.textContent = chars;
+            // Show progress bar
+            progressBar.style.display = 'block';
+            uploadStatus.style.display = 'block';
+            uploadStatus.textContent = 'Uploading...';
+            uploadBtn.disabled = true;
+            
+            // Simulate upload progress
+            let progressValue = 0;
+            const progressInterval = setInterval(() => {
+                progressValue += Math.random() * 10;
+                if (progressValue >= 100) {
+                    progressValue = 100;
+                    clearInterval(progressInterval);
+                    
+                    // Create video object
+                    const videoId = 'vid_' + Date.now();
+                    const videoObject = {
+                        id: videoId,
+                        title: title,
+                        fileName: file.name,
+                        uploadDate: new Date().toLocaleDateString(),
+                        views: 0,
+                        url: URL.createObjectURL(file) // In a real app, this would be a server URL
+                    };
+                    
+                    // Add to storage
+                    uploadedVideos.push(videoObject);
+                    localStorage.setItem('uploadedVideos', JSON.stringify(uploadedVideos));
+                    
+                    // Update UI
+                    uploadStatus.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> Upload complete!';
+                    renderVideoList();
+                    
+                    // Reset form
+                    setTimeout(() => {
+                        resetUploadForm();
+                        // Auto-play the newly uploaded video
+                        playVideo(videoObject);
+                    }, 1000);
+                }
+                progress.style.width = progressValue + '%';
+            }, 200);
+        });
+        
+        // Copy link button
+        copyBtn.addEventListener('click', () => {
+            if (shareLink.value === 'No video selected') return;
+            
+            shareLink.select();
+            document.execCommand('copy');
+            
+            // Change button text temporarily
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            copyBtn.style.background = 'var(--success)';
+            
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+                copyBtn.style.background = 'var(--primary)';
+            }, 2000);
+        });
+        
+        // Render video list
+        function renderVideoList() {
+            videoList.innerHTML = '';
+            
+            if (uploadedVideos.length === 0) {
+                videoList.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray);">No videos uploaded yet</p>';
+                return;
             }
             
-            // Clear text
-            clearBtn.addEventListener('click', function() {
-                textInput.value = '';
-                updatePreview();
+            uploadedVideos.forEach(video => {
+                const videoItem = document.createElement('div');
+                videoItem.className = 'video-item';
+                videoItem.setAttribute('data-id', video.id);
                 
-                // Add animation effect
-                clearBtn.classList.add('pulse');
-                setTimeout(() => {
-                    clearBtn.classList.remove('pulse');
-                }, 500);
-            });
-            
-            // Download PDF - SIMPLE AND WORKING VERSION
-            downloadBtn.addEventListener('click', function() {
-                const { jsPDF } = window.jspdf;
+                videoItem.innerHTML = `
+                    <div class="video-thumbnail">
+                        <i class="fas fa-play-circle" style="font-size: 2rem;"></i>
+                    </div>
+                    <div class="video-details">
+                        <div class="video-item-title">${video.title}</div>
+                        <div class="video-item-date">Uploaded: ${video.uploadDate}</div>
+                    </div>
+                `;
                 
-                // Get values
-                let text = textInput.value;
-                const selectedFontSize = parseInt(fontSize.value);
-                const docName = fileName.value || 'MyDocument';
-                
-                // Add animation effect
-                downloadBtn.classList.add('pulse');
-                setTimeout(() => {
-                    downloadBtn.classList.remove('pulse');
-                }, 500);
-                
-                // Check if text is empty
-                if (!text.trim()) {
-                    alert("Please enter some text before generating PDF!");
-                    return;
-                }
-                
-                // Remove any special characters that might cause issues
-                text = text.replace(/[^\x00-\x7F]/g, "");
-                
-                // Create PDF
-                const doc = new jsPDF();
-                
-                // Set properties
-                doc.setProperties({
-                    title: docName,
-                    subject: 'Text to PDF Conversion',
-                    author: 'MehAR HAMZA PDF Tool',
-                    creator: 'PDF Converter by MehAR HAMZA'
+                videoItem.addEventListener('click', () => {
+                    playVideo(video);
                 });
                 
-                // Set font and size
-                doc.setFont("helvetica");
-                doc.setFontSize(selectedFontSize);
-                
-                // Page dimensions
-                const pageWidth = doc.internal.pageSize.getWidth();
-                const pageHeight = doc.internal.pageSize.getHeight();
-                const margin = 20;
-                const maxWidth = pageWidth - (2 * margin);
-                
-                // Split text into lines
-                const lines = doc.splitTextToSize(text, maxWidth);
-                
-                // Add text to PDF
-                let y = margin;
-                const lineHeight = selectedFontSize * 0.35;
-                
-                for (let i = 0; i < lines.length; i++) {
-                    // Check if we need a new page
-                    if (y + lineHeight > pageHeight - margin) {
-                        doc.addPage();
-                        y = margin;
-                    }
-                    
-                    doc.text(lines[i], margin, y);
-                    y += lineHeight;
-                }
-                
-                // Add footer to every page
-                const pageCount = doc.internal.getNumberOfPages();
-                for (let i = 1; i <= pageCount; i++) {
-                    doc.setPage(i);
-                    doc.setFontSize(10);
-                    doc.setTextColor(100);
-                    doc.text(
-                        'THIS PAGE IS GENERATED BY USING MEHAR HAMZA TOOL', 
-                        pageWidth / 2, 
-                        pageHeight - 10, 
-                        { align: 'center' }
-                    );
-                }
-                
-                // Save PDF
-                doc.save(docName + '.pdf');
-                
-                // Show success message
-                successMessage.style.display = 'block';
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000);
+                videoList.appendChild(videoItem);
             });
+        }
+        
+        // Play video function
+        function playVideo(video) {
+            videoPlayer.src = video.url;
+            displayTitle.textContent = video.title;
+            displayDescription.textContent = `Uploaded on ${video.uploadDate}. ${video.views} views.`;
             
-            // Initialize preview
-            updatePreview();
-        });
+            // Update share link
+            const currentUrl = window.location.href.split('?')[0];
+            shareLink.value = `${currentUrl}?v=${video.id}`;
+            
+            // Increment views
+            video.views++;
+            localStorage.setItem('uploadedVideos', JSON.stringify(uploadedVideos));
+            
+            // Play the video
+            videoPlayer.play();
+        }
+        
+        // Reset upload form
+        function resetUploadForm() {
+            fileInput.value = '';
+            videoTitle.value = '';
+            progressBar.style.display = 'none';
+            uploadStatus.style.display = 'none';
+            progress.style.width = '0%';
+            uploadBtn.disabled = true;
+            
+            uploadArea.innerHTML = `
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h3>Drag & Drop Your Video</h3>
+                <p>MP4, WebM, or MOV (Max. 100MB)</p>
+                <button class="btn btn-primary">Select Files</button>
+            `;
+        }
+        
+        // Check if URL has a video parameter
+        function checkUrlForVideo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('v');
+            
+            if (videoId) {
+                const video = uploadedVideos.find(v => v.id === videoId);
+                if (video) {
+                    playVideo(video);
+                }
+            }
+        }
+        
+        // Initialize
+        checkUrlForVideo();
     </script>
 </body>
 </html>

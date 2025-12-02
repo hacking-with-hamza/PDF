@@ -3,583 +3,942 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VidHost Pro | Upload & Share Videos</title>
+    <title>Dark Tech Zone Hosting</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #4361ee;
-            --secondary: #3a0ca3;
-            --accent: #f72585;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --success: #4cc9f0;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Courier New', monospace;
         }
-        
+
         body {
-            background-color: #f5f7fb;
-            color: var(--dark);
-            line-height: 1.6;
+            background: #0a0a0a;
+            color: #00ff00;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 0, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 255, 0, 0.03) 0%, transparent 50%);
+            overflow-x: hidden;
         }
-        
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
         }
-        
-        /* Header Styles */
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .navbar {
+
+        /* Header with Glitch Effect */
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #00ff00;
+            position: relative;
         }
-        
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(0, 255, 0, 0.1) 50%, 
+                transparent 100%);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-            font-weight: 700;
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            position: relative;
+            overflow: hidden;
         }
-        
-        .logo i {
-            color: var(--accent);
+
+        .logo::before {
+            content: '>>_ ';
+            color: #00ff00;
+            animation: blink 1s infinite;
         }
-        
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .domain-info {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: 1px solid #00ff00;
+            font-family: monospace;
+        }
+
+        .current-domain {
+            color: #00ff00;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .unlock-btn {
+            background: transparent;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 12px 30px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .unlock-btn:hover {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 20px #00ff00;
+            transform: translateY(-2px);
+        }
+
+        .unlock-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: 0.5s;
+        }
+
+        .unlock-btn:hover::before {
+            left: 100%;
+        }
+
         /* Main Content */
         .main-content {
-            display: flex;
-            gap: 30px;
-            padding: 3rem 0;
-        }
-        
-        .upload-section {
-            flex: 1;
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        }
-        
-        .upload-section h2 {
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .upload-area {
-            border: 2px dashed var(--gray);
-            border-radius: 10px;
-            padding: 3rem 2rem;
             text-align: center;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            padding: 50px 20px;
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            margin: 30px 0;
+            background: rgba(0, 0, 0, 0.7);
+            position: relative;
         }
-        
-        .upload-area:hover {
-            border-color: var(--primary);
-            background-color: rgba(67, 97, 238, 0.05);
+
+        .main-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #00ff00;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
         }
-        
-        .upload-area i {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        
-        .upload-area h3 {
-            margin-bottom: 0.5rem;
-        }
-        
-        .upload-area p {
-            color: var(--gray);
-            margin-bottom: 1rem;
-        }
-        
-        .file-input {
-            display: none;
-        }
-        
-        .upload-btn {
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
             width: 100%;
-            padding: 15px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #00ff00, 
+                transparent);
         }
-        
-        .upload-btn:hover {
-            background: var(--secondary);
+
+        .subtitle {
+            font-size: 16px;
+            color: #00ff00;
+            margin-bottom: 30px;
+            opacity: 0.8;
+            font-family: monospace;
         }
-        
-        .upload-btn:disabled {
-            background: var(--gray);
-            cursor: not-allowed;
-        }
-        
-        .video-section {
-            flex: 2;
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        }
-        
-        .video-section h2 {
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .video-player {
-            width: 100%;
+
+        /* Terminal Style Upload */
+        .terminal {
             background: #000;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 2rem;
+            border: 2px solid #00ff00;
+            border-radius: 0;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 800px;
+            text-align: left;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
         }
-        
-        .video-player video {
-            width: 100%;
-            display: block;
-        }
-        
-        .video-info {
-            padding: 1.5rem;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-        
-        .video-title {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .video-meta {
+
+        .terminal-header {
+            background: #00ff00;
+            color: #000;
+            padding: 10px;
+            margin: -30px -30px 20px -30px;
+            font-weight: bold;
             display: flex;
             justify-content: space-between;
-            color: var(--gray);
-            margin-bottom: 1.5rem;
-        }
-        
-        .share-section {
-            margin-top: 2rem;
-        }
-        
-        .share-section h3 {
-            margin-bottom: 1rem;
-            display: flex;
             align-items: center;
-            gap: 10px;
         }
-        
-        .share-link {
-            display: flex;
-            margin-bottom: 1rem;
+
+        .terminal-body {
+            font-family: monospace;
+            line-height: 1.6;
         }
-        
-        .share-link input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px 0 0 5px;
-            font-size: 1rem;
+
+        .prompt {
+            color: #00ff00;
+            margin-bottom: 10px;
         }
-        
-        .copy-btn {
-            padding: 0 20px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 0 5px 5px 0;
+
+        .prompt::before {
+            content: 'root@darktech:~# ';
+            color: #00ff00;
+        }
+
+        .command {
+            color: #00ff00;
+            padding: 10px;
+            background: rgba(0, 255, 0, 0.05);
+            border-left: 3px solid #00ff00;
+            margin: 10px 0;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
-        
-        .copy-btn:hover {
-            background: var(--secondary);
+
+        .command:hover {
+            background: rgba(0, 255, 0, 0.1);
+            transform: translateX(10px);
         }
-        
-        .uploaded-videos {
-            margin-top: 2rem;
+
+        /* Upload Area */
+        .upload-area {
+            border: 3px dashed #00ff00;
+            padding: 60px 20px;
+            margin: 30px 0;
+            text-align: center;
+            background: rgba(0, 255, 0, 0.02);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-        
-        .video-list {
+
+        .upload-area:hover {
+            background: rgba(0, 255, 0, 0.05);
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 50px;
+            color: #00ff00;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Features Grid */
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
+            margin: 50px 0;
         }
-        
-        .video-item {
-            background: #f8f9fa;
-            border-radius: 10px;
+
+        .feature-card {
+            background: rgba(0, 255, 0, 0.05);
+            padding: 25px;
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            transition: all 0.3s;
         }
-        
-        .video-item:hover {
+
+        .feature-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: #00ff00;
+            box-shadow: 0 5px 20px rgba(0, 255, 0, 0.1);
         }
-        
-        .video-thumbnail {
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 120px;
-            background: #ddd;
+            height: 2px;
+            background: #00ff00;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            font-size: 30px;
+            color: #00ff00;
+            margin-bottom: 15px;
+        }
+
+        /* File List */
+        .file-list {
+            display: none;
+            margin-top: 40px;
+        }
+
+        .file-list.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .file-item {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            padding: 15px;
+            margin: 10px 0;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .file-item:hover {
+            background: rgba(0, 255, 0, 0.1);
+            border-color: #00ff00;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
             align-items: center;
             justify-content: center;
-            color: var(--gray);
         }
-        
-        .video-details {
-            padding: 15px;
+
+        .modal.active {
+            display: flex;
         }
-        
-        .video-item-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+
+        .modal-content {
+            background: #000;
+            border: 2px solid #00ff00;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
         }
-        
-        .video-item-date {
-            font-size: 0.8rem;
-            color: var(--gray);
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #00ff00;
+            color: #000;
+            border: none;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-weight: bold;
         }
-        
-        .progress-bar {
-            height: 6px;
-            background: #e9ecef;
-            border-radius: 3px;
-            margin-top: 10px;
-            overflow: hidden;
-            display: none;
-        }
-        
-        .progress {
-            height: 100%;
-            background: var(--success);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        
-        .upload-status {
-            margin-top: 10px;
+
+        /* Footer */
+        .footer {
             text-align: center;
-            font-size: 0.9rem;
-            display: none;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 1px solid rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            opacity: 0.7;
+            font-family: monospace;
         }
-        
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .main-content {
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
                 flex-direction: column;
+                gap: 20px;
+            }
+            
+            .main-title {
+                font-size: 28px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav class="navbar">
-                <div class="logo">
-                    <i class="fas fa-play-circle"></i>
-                    <span>VidHost Pro</span>
-                </div>
-            </nav>
-        </div>
-    </header>
+    <!-- Matrix Background -->
+    <div class="matrix-bg" id="matrixBg"></div>
 
-    <!-- Main Content -->
     <div class="container">
-        <div class="main-content">
-            <!-- Upload Section -->
-            <section class="upload-section">
-                <h2><i class="fas fa-upload"></i> Upload Video</h2>
-                <div class="upload-area" id="uploadArea">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <h3>Drag & Drop Your Video</h3>
-                    <p>MP4, WebM, or MOV (Max. 100MB)</p>
-                    <button class="btn btn-primary">Select Files</button>
-                    <input type="file" class="file-input" id="fileInput" accept="video/*">
-                </div>
-                
-                <div class="upload-details">
-                    <div class="form-group">
-                        <label for="videoTitle">Video Title</label>
-                        <input type="text" id="videoTitle" placeholder="Enter a title for your video" class="form-control">
-                    </div>
-                </div>
-                
-                <div class="progress-bar" id="progressBar">
-                    <div class="progress" id="progress"></div>
-                </div>
-                
-                <div class="upload-status" id="uploadStatus"></div>
-                
-                <button class="upload-btn" id="uploadBtn" disabled>
-                    <i class="fas fa-cloud-upload-alt"></i> Upload Video
-                </button>
-                
-                <div class="uploaded-videos">
-                    <h3 style="margin: 25px 0 15px;">Your Videos</h3>
-                    <div class="video-list" id="videoList">
-                        <!-- Videos will be added here dynamically -->
-                    </div>
-                </div>
-            </section>
+        <!-- Header with Domain Info -->
+        <div class="header">
+            <div class="logo">
+                DARK TECH ZONE
+            </div>
             
-            <!-- Video Section -->
-            <section class="video-section">
-                <h2><i class="fas fa-play-circle"></i> Video Player</h2>
-                <div class="video-player">
-                    <video id="videoPlayer" controls poster="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
-                        Your browser does not support the video tag.
-                    </video>
+            <div class="domain-info">
+                <span style="color: #aaa;">Current Domain:</span>
+                <div class="current-domain" id="currentDomain">Loading...</div>
+                <div style="font-size: 12px; color: #aaa; margin-top: 5px;" id="domainDetails">
+                    Detecting your hosting location...
+                </div>
+            </div>
+            
+            <button class="unlock-btn" id="unlockBtn">
+                <i class="fas fa-terminal"></i> SYSTEM UNLOCK
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1 class="main-title">DARK TECH ZONE HOSTING</h1>
+            <p class="subtitle">>> 100% FREE HOSTING PLATFORM - NO LOGIN REQUIRED <<</p>
+            
+            <!-- Terminal Commands -->
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span>root@darktech:~</span>
+                    <span>FULL ACCESS MODE</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="prompt">system_status</div>
+                    <div style="color: #00ff00;">✓ Platform: ACTIVE</div>
+                    <div style="color: #00ff00;">✓ Storage: UNLIMITED</div>
+                    <div style="color: #00ff00;">✓ Bandwidth: UNLIMITED</div>
+                    <div style="color: #00ff00;">✓ Security: MAXIMUM</div>
+                    
+                    <div class="prompt" style="margin-top: 20px;">current_session</div>
+                    <div style="color: #00ff00;">User: <span id="sessionUser">anonymous</span></div>
+                    <div style="color: #00ff00;">IP: <span id="sessionIP">127.0.0.1</span></div>
+                    <div style="color: #00ff00;">Location: <span id="sessionLocation">Unknown</span></div>
+                    <div style="color: #00ff00;">Access Level: <span id="accessLevel">GUEST</span></div>
+                </div>
+            </div>
+
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h2 style="color: #00ff00; margin-bottom: 10px;">DRAG & DROP FILES HERE</h2>
+                <p style="color: #aaa; margin-bottom: 20px;">Or click to select files from your system</p>
+                <div style="color: #00ff00; font-family: monospace;">
+                    [ SUPPORTED: HTML/CSS/JS | IMAGES | VIDEOS | AUDIO | DOCUMENTS | ARCHIVES ]
+                </div>
+            </div>
+            <input type="file" id="fileInput" multiple style="display: none;">
+
+            <!-- Features -->
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 style="color: #00ff00; margin-bottom: 10px;">WEB HOSTING</h3>
+                    <p style="color: #aaa;">Host HTML, CSS, JS sites instantly</p>
                 </div>
                 
-                <div class="video-info">
-                    <h2 class="video-title" id="displayTitle">Select a video to play</h2>
-                    <div class="video-meta">
-                        <span><i class="far fa-calendar"></i> Uploaded: --</span>
-                        <span><i class="far fa-eye"></i> Views: 0</span>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
                     </div>
-                    <p id="displayDescription">Choose a video from your uploaded videos or upload a new one to get started.</p>
-                    
-                    <div class="share-section">
-                        <h3><i class="fas fa-share-alt"></i> Share Your Video</h3>
-                        <div class="share-link">
-                            <input type="text" id="shareLink" value="No video selected" readonly>
-                            <button class="copy-btn" id="copyBtn">Copy</button>
-                        </div>
-                        <p style="font-size: 0.9rem; color: var(--gray); margin-bottom: 15px;">Share this link to allow others to view your video</p>
-                    </div>
+                    <h3 style="color: #00ff00; margin-bottom: 10px;">UNLIMITED STORAGE</h3>
+                    <p style="color: #aaa;">No limits on file size or quantity</p>
                 </div>
-            </section>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 style="color: #00ff00; margin-bottom: 10px;">ULTRA FAST</h3>
+                    <p style="color: #aaa;">Global CDN with instant access</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 style="color: #00ff00; margin-bottom: 10px;">100% SECURE</h3>
+                    <p style="color: #aaa;">Military-grade encryption</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- File List -->
+        <div class="file-list" id="fileList">
+            <h2 style="color: #00ff00; margin-bottom: 20px; border-bottom: 1px solid #00ff00; padding-bottom: 10px;">
+                <i class="fas fa-folder-open"></i> UPLOADED FILES
+            </h2>
+            <div id="filesContainer">
+                <!-- Files will be listed here -->
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div style="margin-bottom: 10px;">
+                <span style="color: #00ff00;">DARK TECH ZONE HOSTING</span> | 
+                <span style="color: #aaa;">EST. 2023</span>
+            </div>
+            <div style="font-size: 14px; color: #aaa;">
+                UPLOAD • HOST • SHARE — COMPLETELY FREE • NO TRACKING • NO LOGS
+            </div>
+            <div style="margin-top: 20px; font-size: 12px; color: #666;">
+                <span id="serverInfo">Server: Processing...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">X</button>
+            <h2 style="color: #00ff00; margin-bottom: 20px;">
+                <i class="fas fa-link"></i> FILE READY
+            </h2>
+            <p style="color: #aaa; margin-bottom: 15px;">Your file has been uploaded successfully:</p>
+            
+            <div style="background: rgba(0, 255, 0, 0.05); padding: 15px; border: 1px solid #00ff00; margin: 20px 0;">
+                <div style="color: #00ff00; font-family: monospace; word-break: break-all;" id="shareLink">
+                    https://darktech.zone/file/...
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button style="flex: 1; background: #00ff00; color: #000; border: none; padding: 10px; cursor: pointer;" id="copyBtn">
+                    COPY LINK
+                </button>
+                <button style="flex: 1; background: transparent; color: #00ff00; border: 1px solid #00ff00; padding: 10px; cursor: pointer;" id="closeBtn2">
+                    CLOSE
+                </button>
+            </div>
         </div>
     </div>
 
     <script>
-        // DOM Elements
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const uploadBtn = document.getElementById('uploadBtn');
-        const videoPlayer = document.getElementById('videoPlayer');
-        const displayTitle = document.getElementById('displayTitle');
-        const displayDescription = document.getElementById('displayDescription');
-        const shareLink = document.getElementById('shareLink');
-        const copyBtn = document.getElementById('copyBtn');
-        const videoList = document.getElementById('videoList');
-        const progressBar = document.getElementById('progressBar');
-        const progress = document.getElementById('progress');
-        const uploadStatus = document.getElementById('uploadStatus');
-        const videoTitle = document.getElementById('videoTitle');
-        
-        // Store uploaded videos
-        let uploadedVideos = JSON.parse(localStorage.getItem('uploadedVideos')) || [];
-        
-        // Initialize the video list
-        renderVideoList();
-        
-        // Upload area click event
-        uploadArea.addEventListener('click', () => {
-            fileInput.click();
-        });
-        
-        // File input change event
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                const fileName = e.target.files[0].name;
-                uploadArea.innerHTML = `
-                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                    <h3>${fileName}</h3>
-                    <p>Ready to upload</p>
-                    <button class="btn btn-primary">Change File</button>
-                `;
-                uploadBtn.disabled = false;
+        // Matrix Background Effect
+        function createMatrixEffect() {
+            const bg = document.getElementById('matrixBg');
+            const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+            const fontSize = 14;
+            const columns = Math.floor(window.innerWidth / fontSize);
+            
+            // Create columns
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.style.position = 'absolute';
+                column.style.top = '-100px';
+                column.style.left = (i * fontSize) + 'px';
+                column.style.fontSize = fontSize + 'px';
+                column.style.fontFamily = 'monospace';
+                column.style.color = '#00ff00';
+                column.style.opacity = '0.1';
+                column.style.writingMode = 'vertical-rl';
+                column.style.textOrientation = 'upright';
+                bg.appendChild(column);
+                
+                // Animate column
+                animateColumn(column);
             }
-        });
-        
-        // Upload button click event
-        uploadBtn.addEventListener('click', () => {
-            if (!fileInput.files.length) return;
             
-            const file = fileInput.files[0];
-            const title = videoTitle.value || file.name.replace(/\.[^/.]+$/, ""); // Remove extension
-            
-            // Show progress bar
-            progressBar.style.display = 'block';
-            uploadStatus.style.display = 'block';
-            uploadStatus.textContent = 'Uploading...';
-            uploadBtn.disabled = true;
-            
-            // Simulate upload progress
-            let progressValue = 0;
-            const progressInterval = setInterval(() => {
-                progressValue += Math.random() * 10;
-                if (progressValue >= 100) {
-                    progressValue = 100;
-                    clearInterval(progressInterval);
+            function animateColumn(column) {
+                let length = Math.floor(Math.random() * 20) + 10;
+                let position = 0;
+                
+                function rain() {
+                    let text = '';
+                    for (let i = 0; i < length; i++) {
+                        if (i === position) {
+                            text += chars[Math.floor(Math.random() * chars.length)];
+                        } else if (i < position) {
+                            text += chars[Math.floor(Math.random() * chars.length)];
+                        } else {
+                            text += ' ';
+                        }
+                    }
                     
-                    // Create video object
-                    const videoId = 'vid_' + Date.now();
-                    const videoObject = {
-                        id: videoId,
-                        title: title,
-                        fileName: file.name,
-                        uploadDate: new Date().toLocaleDateString(),
-                        views: 0,
-                        url: URL.createObjectURL(file) // In a real app, this would be a server URL
-                    };
+                    column.textContent = text;
                     
-                    // Add to storage
-                    uploadedVideos.push(videoObject);
-                    localStorage.setItem('uploadedVideos', JSON.stringify(uploadedVideos));
+                    position++;
+                    if (position > length) {
+                        position = 0;
+                        length = Math.floor(Math.random() * 20) + 10;
+                    }
                     
-                    // Update UI
-                    uploadStatus.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> Upload complete!';
-                    renderVideoList();
-                    
-                    // Reset form
-                    setTimeout(() => {
-                        resetUploadForm();
-                        // Auto-play the newly uploaded video
-                        playVideo(videoObject);
-                    }, 1000);
+                    setTimeout(rain, 100 + Math.random() * 100);
                 }
-                progress.style.width = progressValue + '%';
-            }, 200);
-        });
+                
+                rain();
+            }
+        }
+
+        // Detect current domain
+        function detectDomainInfo() {
+            const domain = window.location.hostname;
+            const protocol = window.location.protocol;
+            const path = window.location.pathname;
+            const fullUrl = window.location.href;
+            
+            document.getElementById('currentDomain').textContent = domain;
+            
+            let details = '';
+            if (domain === 'localhost' || domain === '127.0.0.1') {
+                details = 'Local Development Server';
+            } else if (domain.includes('github.io')) {
+                details = 'GitHub Pages Hosting';
+            } else if (domain.includes('netlify.app')) {
+                details = 'Netlify Hosting';
+            } else if (domain.includes('vercel.app')) {
+                details = 'Vercel Hosting';
+            } else if (domain.includes('firebaseapp.com')) {
+                details = 'Firebase Hosting';
+            } else if (domain.includes('herokuapp.com')) {
+                details = 'Heroku Hosting';
+            } else if (domain.includes('replit.dev')) {
+                details = 'Replit Hosting';
+            } else if (domain.includes('glitch.me')) {
+                details = 'Glitch Hosting';
+            } else if (domain.includes('000webhostapp.com')) {
+                details = '000WebHost';
+            } else if (domain.includes('infinityfree.net')) {
+                details = 'InfinityFree';
+            } else {
+                details = 'Custom Domain Hosting';
+            }
+            
+            document.getElementById('domainDetails').textContent = details;
+            document.getElementById('serverInfo').textContent = `Server: ${domain} | Protocol: ${protocol}`;
+            
+            // Update session info
+            document.getElementById('sessionIP').textContent = '192.168.' + 
+                Math.floor(Math.random() * 255) + '.' + 
+                Math.floor(Math.random() * 255);
+            
+            // Try to get location from domain
+            let location = 'Unknown';
+            if (domain.includes('.com')) location = 'United States';
+            else if (domain.includes('.in')) location = 'India';
+            else if (domain.includes('.uk')) location = 'United Kingdom';
+            else if (domain.includes('.de')) location = 'Germany';
+            else if (domain.includes('.fr')) location = 'France';
+            else if (domain.includes('.jp')) location = 'Japan';
+            else if (domain.includes('.cn')) location = 'China';
+            else if (domain.includes('.ru')) location = 'Russia';
+            
+            document.getElementById('sessionLocation').textContent = location;
+        }
+
+        // File upload functionality
+        let uploadedFiles = [];
         
-        // Copy link button
-        copyBtn.addEventListener('click', () => {
-            if (shareLink.value === 'No video selected') return;
+        document.getElementById('unlockBtn').addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-unlock"></i> SYSTEM UNLOCKED';
+            this.style.background = '#00ff00';
+            this.style.color = '#000';
             
-            shareLink.select();
-            document.execCommand('copy');
+            document.getElementById('accessLevel').textContent = 'ROOT';
+            document.getElementById('sessionUser').textContent = 'root_admin';
             
-            // Change button text temporarily
-            const originalText = copyBtn.textContent;
-            copyBtn.textContent = 'Copied!';
-            copyBtn.style.background = 'var(--success)';
+            document.getElementById('fileList').classList.add('active');
             
-            setTimeout(() => {
-                copyBtn.textContent = originalText;
-                copyBtn.style.background = 'var(--primary)';
-            }, 2000);
+            // Show notification
+            showNotification('System unlocked! Full access granted.');
         });
-        
-        // Render video list
-        function renderVideoList() {
-            videoList.innerHTML = '';
-            
-            if (uploadedVideos.length === 0) {
-                videoList.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray);">No videos uploaded yet</p>';
+
+        // Upload area click
+        document.getElementById('uploadArea').addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+
+        // File input change
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            if (!document.getElementById('fileList').classList.contains('active')) {
+                showNotification('Please unlock the system first!');
                 return;
             }
             
-            uploadedVideos.forEach(video => {
-                const videoItem = document.createElement('div');
-                videoItem.className = 'video-item';
-                videoItem.setAttribute('data-id', video.id);
-                
-                videoItem.innerHTML = `
-                    <div class="video-thumbnail">
-                        <i class="fas fa-play-circle" style="font-size: 2rem;"></i>
-                    </div>
-                    <div class="video-details">
-                        <div class="video-item-title">${video.title}</div>
-                        <div class="video-item-date">Uploaded: ${video.uploadDate}</div>
-                    </div>
-                `;
-                
-                videoItem.addEventListener('click', () => {
-                    playVideo(video);
-                });
-                
-                videoList.appendChild(videoItem);
-            });
-        }
+            const files = e.target.files;
+            for (let file of files) {
+                uploadFile(file);
+            }
+        });
+
+        // Drag and drop
+        const uploadArea = document.getElementById('uploadArea');
         
-        // Play video function
-        function playVideo(video) {
-            videoPlayer.src = video.url;
-            displayTitle.textContent = video.title;
-            displayDescription.textContent = `Uploaded on ${video.uploadDate}. ${video.views} views.`;
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#00ff00';
+            this.style.background = 'rgba(0, 255, 0, 0.1)';
+        });
+
+        uploadArea.addEventListener('dragleave', function() {
+            this.style.borderColor = '#00ff00';
+            this.style.background = 'rgba(0, 255, 0, 0.02)';
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#00ff00';
+            this.style.background = 'rgba(0, 255, 0, 0.02)';
             
-            // Update share link
-            const currentUrl = window.location.href.split('?')[0];
-            shareLink.value = `${currentUrl}?v=${video.id}`;
+            if (!document.getElementById('fileList').classList.contains('active')) {
+                showNotification('Please unlock the system first!');
+                return;
+            }
             
-            // Increment views
-            video.views++;
-            localStorage.setItem('uploadedVideos', JSON.stringify(uploadedVideos));
+            const files = e.dataTransfer.files;
+            for (let file of files) {
+                uploadFile(file);
+            }
+        });
+
+        function uploadFile(file) {
+            const fileId = Date.now() + Math.random().toString(36).substr(2, 9);
+            const fileSize = formatFileSize(file.size);
+            const fileType = getFileType(file.name);
             
-            // Play the video
-            videoPlayer.play();
-        }
-        
-        // Reset upload form
-        function resetUploadForm() {
-            fileInput.value = '';
-            videoTitle.value = '';
-            progressBar.style.display = 'none';
-            uploadStatus.style.display = 'none';
-            progress.style.width = '0%';
-            uploadBtn.disabled = true;
-            
-            uploadArea.innerHTML = `
-                <i class="fas fa-cloud-upload-alt"></i>
-                <h3>Drag & Drop Your Video</h3>
-                <p>MP4, WebM, or MOV (Max. 100MB)</p>
-                <button class="btn btn-primary">Select Files</button>
+            // Create file item
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <div>
+                    <div style="color: #00ff00; font-weight: bold;">
+                        <i class="${getFileIcon(fileType)}"></i> ${file.name}
+                    </div>
+                    <div style="color: #aaa; font-size: 12px; margin-top: 5px;">
+                        ${fileSize} • ${fileType} • ${new Date().toLocaleTimeString()}
+                    </div>
+                </div>
+                <div>
+                    <button class="action-btn" data-action="share" data-id="${fileId}" style="background: transparent; color: #00ff00; border: 1px solid #00ff00; padding: 5px 15px; margin-right: 10px; cursor: pointer;">
+                        <i class="fas fa-share"></i>
+                    </button>
+                    <button class="action-btn" data-action="delete" data-id="${fileId}" style="background: transparent; color: #ff0000; border: 1px solid #ff0000; padding: 5px 15px; cursor: pointer;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
             `;
-        }
-        
-        // Check if URL has a video parameter
-        function checkUrlForVideo() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const videoId = urlParams.get('v');
             
-            if (videoId) {
-                const video = uploadedVideos.find(v => v.id === videoId);
-                if (video) {
-                    playVideo(video);
-                }
+            document.getElementById('filesContainer').appendChild(fileItem);
+            
+            // Store file info
+            uploadedFiles.push({
+                id: fileId,
+                name: file.name,
+                size: fileSize,
+                type: fileType,
+                url: generateUrl(file.name)
+            });
+            
+            // Add event listeners
+            fileItem.querySelector('[data-action="share"]').addEventListener('click', function() {
+                shareFile(fileId);
+            });
+            
+            fileItem.querySelector('[data-action="delete"]').addEventListener('click', function() {
+                deleteFile(fileId);
+                fileItem.remove();
+                showNotification('File deleted from server.');
+            });
+            
+            showNotification(`File "${file.name}" uploaded successfully!`);
+        }
+
+        function shareFile(fileId) {
+            const file = uploadedFiles.find(f => f.id === fileId);
+            if (file) {
+                document.getElementById('shareLink').textContent = file.url;
+                document.getElementById('shareModal').classList.add('active');
             }
         }
-        
+
+        function deleteFile(fileId) {
+            uploadedFiles = uploadedFiles.filter(f => f.id !== fileId);
+        }
+
+        function generateUrl(filename) {
+            const domain = window.location.hostname;
+            const randomId = Math.random().toString(36).substr(2, 16);
+            const ext = filename.split('.').pop();
+            return `https://${domain}/d/${randomId}.${ext}`;
+        }
+
+        // Modal controls
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('shareModal').classList.remove('active');
+        });
+
+        document.getElementById('closeBtn2').addEventListener('click', function() {
+            document.getElementById('shareModal').classList.remove('active');
+        });
+
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const text = document.getElementById('shareLink').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                this.textContent = 'COPIED!';
+                this.style.background = '#00aa00';
+                setTimeout(() => {
+                    this.textContent = 'COPY LINK';
+                    this.style.background = '#00ff00';
+                }, 2000);
+            });
+        });
+
+        // Close modal on outside click
+        document.getElementById('shareModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+
+        // Helper functions
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: rgba(0, 0, 0, 0.9);
+                color: #00ff00;
+                border: 1px solid #00ff00;
+                padding: 15px 25px;
+                font-family: monospace;
+                z-index: 1000;
+                max-width: 300px;
+                box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            `;
+            notification.textContent = `>> ${message}`;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function getFileType(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(ext)) return 'Image';
+            if (['mp4', 'avi', 'mov', 'mkv', 'wmv'].includes(ext)) return 'Video';
+            if (['mp3', 'wav', 'ogg', 'm4a'].includes(ext)) return 'Audio';
+            if (['html', 'htm', 'css', 'js', 'php'].includes(ext)) return 'Web File';
+            if (['pdf', 'doc', 'docx', 'txt'].includes(ext)) return 'Document';
+            if (['zip', 'rar', '7z'].includes(ext)) return 'Archive';
+            return 'File';
+        }
+
+        function getFileIcon(type) {
+            switch(type) {
+                case 'Image': return 'fas fa-image';
+                case 'Video': return 'fas fa-video';
+                case 'Audio': return 'fas fa-music';
+                case 'Web File': return 'fas fa-code';
+                case 'Document': return 'fas fa-file-alt';
+                case 'Archive': return 'fas fa-file-archive';
+                default: return 'fas fa-file';
+            }
+        }
+
         // Initialize
-        checkUrlForVideo();
+        window.addEventListener('load', function() {
+            createMatrixEffect();
+            detectDomainInfo();
+            
+            // Add demo file after unlock
+            setTimeout(() => {
+                if (document.getElementById('fileList').classList.contains('active')) {
+                    const demoFile = {
+                        name: 'welcome_to_darktech.html',
+                        size: 1024,
+                        type: 'Web File'
+                    };
+                    
+                    const demoItem = document.createElement('div');
+                    demoItem.className = 'file-item';
+                    demoItem.innerHTML = `
+                        <div>
+                            <div style="color: #00ff00; font-weight: bold;">
+                                <i class="fas fa-code"></i> welcome_to_darktech.html
+                            </div>
+                            <div style="color: #aaa; font-size: 12px; margin-top: 5px;">
+                                1 KB • Web File • Demo File
+                            </div>
+                        </div>
+                        <div>
+                            <button class="action-btn" data-action="share" style="background: transparent; color: #00ff00; border: 1px solid #00ff00; padding: 5px 15px; margin-right: 10px; cursor: pointer;">
+                                <i class="fas fa-share"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    document.getElementById('filesContainer').appendChild(demoItem);
+                    
+                    // Add demo to files list
+                    uploadedFiles.push({
+                        id: 'demo',
+                        name: 'welcome_to_darktech.html',
+                        size: '1 KB',
+                        type: 'Web File',
+                        url: generateUrl('welcome_to_darktech.html')
+                    });
+                }
+            }, 1000);
+        });
     </script>
 </body>
 </html>
